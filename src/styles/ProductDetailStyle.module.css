@@ -1,0 +1,29 @@
+.productDetailCard {
+    background-color: gainsboro;
+    margin: 20px 120px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.productHeader {
+    display: flex;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.productContent {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.productContent > img {
+    height: 400px;
+    margin: 16px 0;
+}
+
+
+.productContent > .productInfo {
+    padding-left: 20px;
+}
