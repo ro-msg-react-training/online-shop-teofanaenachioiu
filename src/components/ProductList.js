@@ -1,19 +1,19 @@
-import React, { Component, Fragment } from 'react'
-import products from '../data/products.json'
+import React from 'react'
 import ProductListItem from './ProductListItem'
 import stylesList from '../styles/ProductListStyle.module.css';
 
 
-class ProductList extends Component {
-    render() {
-        return (
-            <div className={stylesList.productList}>
-                {
-                    products.map(prod => <ProductListItem key={prod.id} product ={prod}/>)
-                }
-            </div>
-        )
-    }
+function ProductList(props) {
+    return (
+        <div className={stylesList.productList}>
+            {
+                props.products.map(prod => <ProductListItem 
+                                                key={prod.id} 
+                                                product={prod} 
+                                                handleClickItemList={props.handleClickItemList}/>)
+            }
+        </div>
+    )
 }
 
 export default ProductList
