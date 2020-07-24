@@ -1,7 +1,8 @@
 import React from 'react'
 import styles from '../styles/ProductListItemStyle.module.css';
+import ProductListItemProps from '../props/ProductListItemProps';
 
-function ProductListItem(props) {
+function ProductListItem(props: ProductListItemProps) {
     return (
         <div 
             className={styles.productCard} 

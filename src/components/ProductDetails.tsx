@@ -1,8 +1,9 @@
 import React from 'react'
 import productDetailStyle from '../styles/ProductDetailStyle.module.css';
+import ProductDetailsProps from '../props/ProductDetailsProps';
 
 
-function ProductDetails(props) {
+function ProductDetails(props: ProductDetailsProps) {
     return (
         <div className={productDetailStyle.productDetailCard}>
             <div className={productDetailStyle.productHeader}>
