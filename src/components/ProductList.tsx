@@ -1,19 +1,19 @@
 import React from 'react'
 import ProductListItem from './ProductListItem'
-import stylesList from '../styles/ProductListStyle.module.css';
 import ProductListProps from '../props/ProductListProps';
-
+import {Container} from '@material-ui/core'
 
 function ProductList(props: ProductListProps) {
     return (
-        <div className={stylesList.productList}>
+        <Container>
+            <h1>Products</h1>
             {
                 props.products.map(prod => <ProductListItem 
                                                 key={prod.id} 
                                                 product={prod} 
                                                 handleClickItemList={props.handleClickItemList}/>)
             }
-        </div>
+        </Container>
     )
 }
 

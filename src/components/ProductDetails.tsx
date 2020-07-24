@@ -1,34 +1,61 @@
 import React from 'react'
-import productDetailStyle from '../styles/ProductDetailStyle.module.css';
 import ProductDetailsProps from '../props/ProductDetailsProps';
+import { Container, Paper, Typography, Grid, Button, makeStyles } from "@material-ui/core"
+import ProductList from './ProductList';
 
+const useStyles = makeStyles((theme) => ({
+    container: {
+        marginTop: '20px'
+    },
+    paper: {
+        padding: '20px',
+    },
+    img: {
+        width: '200px'
+    },
+}));
 
 function ProductDetails(props: ProductDetailsProps) {
+    const classes = useStyles();
+
     return (
-        <div className={productDetailStyle.productDetailCard}>
-            <div className={productDetailStyle.productHeader}>
-                <h1>{props.product.name}</h1>
-                <div className={productDetailStyle.spacer}></div>
-                <h1>{props.product.price} euro</h1>
-            </div>
+        <Container className={classes.container}>
+            <h1>Product details</h1>
+            <Paper className={classes.paper}>
+                <Grid container spacing={2}>
+                    <Grid item>
+                        <img 
+                            className={classes.img} 
+                            alt={props.product.name} 
+                            src={props.product.image} />
+                    </Grid>
 
-            <div className={productDetailStyle.productContent}>
-                <img
-                    src={props.product.image}
-                    alt={props.product.name} />
+                    <Grid item xs={12} sm container>
+                        <Grid item xs container direction="column" spacing={2}>
+                            <Grid item xs>
+                                <Typography variant="subtitle1">
+                                    {props.product.name}
+                                </Typography>
+                                <Typography color="textSecondary">
+                                    {props.product.description}
+                                </Typography>
+                            </Grid>
+                            
+                            <Grid item>
+                                <Typography variant="body2" color="textSecondary">
+                                    Category: {props.product.category}
+                                </Typography>
+                            </Grid>
+                        </Grid>
 
-                <div className={productDetailStyle.productInfo}>
-                    <p>
-                        <strong>Description: </strong>
-                        {props.product.description}
-                    </p>
-                    <p>
-                        <strong>Category: </strong>
-                        {props.product.category}
-                    </p>
-                </div>
-            </div>
-        </div>
+                        <Grid item >
+                            <Typography variant="subtitle1">$ {props.product.price}</Typography>
+                            <Button color="primary">Details</Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Paper>
+        </Container>
     )
 }
 
