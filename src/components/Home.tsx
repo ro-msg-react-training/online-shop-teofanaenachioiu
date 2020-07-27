@@ -11,7 +11,6 @@ const useStyles = makeStyles({
     }
 });
 
-
 function Home() {
     const classes = useStyles();
 

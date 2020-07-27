@@ -1,11 +1,15 @@
-import products from './products.json'
-import Product from '../domain/Product'
+import axios from 'axios';
+
+const API = 'http://localhost:4000'
 
 export function getAll(){
-    return products;
+    return axios.get(`${API}/products`)
 }
 
 export function findById(id: number) {
+    return axios.get(`${API}/products/${id}`);
+}
 
-    return products.find(prod => prod.id == id);
+export function deleteById(id: number) {
+    return axios.delete(`${API}/products/${id}`);
 }
