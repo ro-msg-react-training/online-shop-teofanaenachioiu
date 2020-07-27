@@ -1,7 +1,10 @@
 import React from 'react'
-import ProductDetailsProps from '../props/ProductDetailsProps';
 import { Container, Paper, Typography, Grid, Button, makeStyles } from "@material-ui/core"
-import ProductList from './ProductList';
+import { RouteComponentProps } from "react-router-dom";
+import {findById} from '../data/ProductService'
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import { addProduct } from '../data/CartService'
+import Product from '../domain/Product';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -15,10 +18,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function ProductDetails(props: ProductDetailsProps) {
+function ProductDetails(props: RouteComponentProps<any>) {
     const classes = useStyles();
+    const params = props.match.params
+    const product = findById(params.id) as Product
+
+    function addProductToCart() {
+        addProduct(product)
+        alert('Product '+ product.name+ ' added to cart!')
+    }
 
     return (
+        product?
         <Container className={classes.container}>
             <h1>Product details</h1>
             <Paper className={classes.paper}>
@@ -26,36 +37,37 @@ function ProductDetails(props: ProductDetailsProps) {
                     <Grid item>
                         <img 
                             className={classes.img} 
-                            alt={props.product.name} 
-                            src={props.product.image} />
+                            alt={product.name} 
+                            src={product.image} />
                     </Grid>
 
                     <Grid item xs={12} sm container>
                         <Grid item xs container direction="column" spacing={2}>
                             <Grid item xs>
                                 <Typography variant="subtitle1">
-                                    {props.product.name}
+                                    {product.name}
                                 </Typography>
                                 <Typography color="textSecondary">
-                                    {props.product.description}
+                                    {product.description}
                                 </Typography>
                             </Grid>
                             
                             <Grid item>
                                 <Typography variant="body2" color="textSecondary">
-                                    Category: {props.product.category}
+                                    Category: {product.category}
                                 </Typography>
                             </Grid>
                         </Grid>
 
                         <Grid item >
-                            <Typography variant="subtitle1">$ {props.product.price}</Typography>
-                            <Button color="primary">Details</Button>
+                            <Typography variant="subtitle1">$ {product.price}</Typography>
+                            <Button color="primary" onClick={addProductToCart}><AddShoppingCartIcon/></Button>
                         </Grid>
                     </Grid>
                 </Grid>
             </Paper>
         </Container>
+        : <h1>Not found</h1>
     )
 }
 

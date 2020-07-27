@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
-import ProductList from './components/ProductList';
-import ProductDetails from "./components/ProductDetails";
-import products from './data/products.json'
-import Product from './domain/Product';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
+import ProductList from './components/ProductList';
+import ProductDetails from './components/ProductDetails';
+import Menu from './components/Menu';
+import UserCart from './components/UserCart';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -16,18 +24,24 @@ const theme = createMuiTheme({
 
 
 function App() {
-  const [product, setProduct] = useState(products[0])
-
-  function handleClickItemList(e: React.MouseEvent<HTMLDivElement>, product: Product) {
-    e.preventDefault();
-    setProduct(product)
-  }
-
   return (
     <>
       <ThemeProvider theme={theme}>
-        <ProductDetails product={product} />
-        <ProductList products={products} handleClickItemList={handleClickItemList}/>
+        <Router>
+          <Menu />
+          <Switch>
+            <Route exact path="/" >
+              <Redirect
+                to={{
+                  pathname: "/products",
+                }}
+              />
+            </Route>
+            <Route exact path="/products" component={ProductList} />
+            <Route exact path="/cart" component={UserCart} />
+            <Route exact path="/products/:id" component={ProductDetails} />
+          </Switch>
+        </Router>
       </ThemeProvider>
     </>
   );

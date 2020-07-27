@@ -1,6 +1,15 @@
 import React from 'react'
 import ProductListItemProps from '../props/ProductListItemProps';
-import { Grid, Button, Paper, makeStyles, Typography, ButtonBase } from "@material-ui/core"
+import { Grid, Button, Paper, makeStyles, Typography } from "@material-ui/core"
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useParams,
+    useRouteMatch
+} from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -13,9 +22,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
 function ProductListItem(props: ProductListItemProps) {
     const classes = useStyles();
+    let match = useRouteMatch();
+
     return (
+        <>
         <Paper className={classes.paper}>
             <Grid container spacing={2}>
                 <Grid item>
@@ -33,14 +46,17 @@ function ProductListItem(props: ProductListItemProps) {
 
                 <Grid item>
                     <Typography>
-                        {props.product.price} euro
+                        $ {props.product.price}
                     </Typography>
-                    <Button >
-                        Details
+                    <Button color="primary">
+                        <Link to={`${match.url}/${props.product.id}`}>
+                            Details
+                        </Link>
                     </Button>
                 </Grid>
             </Grid>
         </Paper>
+        </>
     )
 }
 
