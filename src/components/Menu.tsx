@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     },
     topnavContent: {
         display: 'flex',
-        height: 50,
+        height: '3em',
         alignItems: 'center'
     },
     spacer: {

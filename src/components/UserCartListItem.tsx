@@ -1,10 +1,11 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
-import Product from '../domain/Product';
+import CartProduct from '../domain/CartProduct';
 import { StyledPaper } from './StyledPaper';
+import { UpDownInput } from './UpDownInput';
 
 
-function UserCartListItem(props: {product: Product}) {
+function UserCartListItem(props: { product: CartProduct, handleQuantityChanged: any }) {
     return (
         <>
             <StyledPaper>
@@ -19,8 +20,15 @@ function UserCartListItem(props: {product: Product}) {
                         <Typography>
                             $ {props.product.price}
                         </Typography>
-                        {/* To do
-                        To add quantity input*/}
+                        <UpDownInput
+                            label="Quantity"
+                            type="number"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            defaultValue={props.product.quantity}
+                            onChange={(e)=> props.handleQuantityChanged(props.product, e.target.value)}
+                        />
                     </Grid>
                 </Grid>
             </StyledPaper>

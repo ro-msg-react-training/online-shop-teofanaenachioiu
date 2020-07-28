@@ -7,10 +7,10 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
-import ProductList from './components/ProductList';
-import ProductDetails from './components/ProductDetails';
+import ProductList from './views/ProductList';
+import ProductDetails from './views/ProductDetails';
 import Menu from './components/Menu';
-import UserCart from './components/UserCart';
+import UserCart from './views/UserCart';
 
 
 const theme = createMuiTheme({

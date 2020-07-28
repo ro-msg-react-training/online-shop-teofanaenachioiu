@@ -7,7 +7,7 @@ import { StyledLink } from './StyledLink';
 import Product from '../domain/Product';
 
 
-function ProductListItem(props: {product: Product}) {
+function ProductListItem(props: { product: Product }) {
     let match = useRouteMatch();
 
     return (
@@ -27,7 +27,7 @@ function ProductListItem(props: {product: Product}) {
                         <StyledButton>
                             <StyledLink to={`${match.url}/${props.product.id}`}>
                                 Details
-                        </StyledLink>
+                            </StyledLink>
                         </StyledButton>
                     </Grid>
                 </Grid>

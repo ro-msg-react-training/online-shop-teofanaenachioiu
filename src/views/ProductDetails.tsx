@@ -1,21 +1,18 @@
 import React, { useEffect, useState, Fragment } from 'react';
-import { Container, Paper, Typography, Grid, Button, makeStyles, LinearProgress } from "@material-ui/core";
+import { Container, Typography, Grid, Button, makeStyles, LinearProgress } from "@material-ui/core";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import { findById, deleteById } from '../data/ProductService';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import { addProductInUserCart } from '../data/CartService';
 import Product from '../domain/Product';
+import { StyledPaper } from '../components/StyledPaper';
+
 
 const useStyles = makeStyles((theme) => ({
-    container: {
-        marginTop: '20px'
-    },
-    paper: {
-        padding: '20px',
-    },
     img: {
-        width: '200px'
+        width: '100%',
+        height: '100%'
     },
 }));
 
@@ -60,16 +57,16 @@ function ProductDetails(props: RouteComponentProps<any>) {
     }
 
     return (
-        <Container className={classes.container}>
+        <Container>
+            <h1>Product details</h1>
             {
                 isLoading ?
                     <LinearProgress /> :
                     isError ?
                         <p> Product not found </p> :
                         <Fragment>
-                            <h1>Product details</h1>
 
-                            <Paper className={classes.paper}>
+                            <StyledPaper>
                                 <Grid container spacing={2}>
                                     <Grid item>
                                         <img
@@ -97,17 +94,17 @@ function ProductDetails(props: RouteComponentProps<any>) {
                                             </Grid>
                                         </Grid>
                                     </Grid>
-                                    <Grid item sm container direction="column" spacing={2}>
-                                            <Grid item xs>
-                                                <Typography variant="subtitle1">$ {product.price}</Typography>
-                                                <Button color="primary" onClick={addProductToCart}><AddShoppingCartIcon /></Button>
-                                            </Grid>
-                                            <Grid item >
-                                                <Button color="primary" onClick={deleteProduct}><DeleteForeverOutlinedIcon /></Button>
-                                            </Grid>
+                                    <Grid item>
+                                        <Grid item>
+                                            <Typography variant="subtitle1">$ {product.price}</Typography>
+                                            <Button color="primary" onClick={addProductToCart}><AddShoppingCartIcon /></Button>
                                         </Grid>
+                                        <Grid item >
+                                            <Button color="primary" onClick={deleteProduct}><DeleteForeverOutlinedIcon /></Button>
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
-                            </Paper>
+                            </StyledPaper>
                         </Fragment>
             }
         </Container>

@@ -15,11 +15,12 @@ function Home() {
     const classes = useStyles();
 
     return (
-            <Container className={classes.center}>
-                <h1>Welcome!</h1>
-                <Button>
-                    <Link to='/products' className={classes.link}>View products</Link></Button>
-            </Container>
+        <Container className={classes.center}>
+            <h1>Welcome!</h1>
+            <Button>
+                <Link to='/products' className={classes.link}>View products</Link>
+            </Button>
+        </Container>
     )
 }
 
