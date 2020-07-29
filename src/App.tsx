@@ -24,7 +24,6 @@ const theme = createMuiTheme({
 
 function App() {
   return (
-    <>
       <ThemeProvider theme={theme}>
         <Router>
           <Menu />
@@ -42,7 +41,6 @@ function App() {
           </Switch>
         </Router>
       </ThemeProvider>
-    </>
   );
 }
 

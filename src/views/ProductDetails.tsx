@@ -40,12 +40,12 @@ function ProductDetails(props: RouteComponentProps<any>) {
             })
     }, [params.id]);
 
-    function addProductToCart() {
+    const addProductToCart = () => {
         addProductInUserCart(product)
         alert('Product ' + product.name + ' added to cart!')
     }
 
-    function deleteProduct(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    const deleteProduct = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         deleteById(params.id)
             .then(result => {
                 history.goBack()

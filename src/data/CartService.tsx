@@ -41,7 +41,6 @@ export function sendUserOrder(){
         'customer': 'doej', 
         'products': productToSend
     }
-    console.log(data)
 
     return axios.post(`${API}/orders`, data)
 }
