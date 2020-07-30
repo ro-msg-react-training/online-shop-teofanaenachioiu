@@ -1,16 +1,22 @@
 import React from 'react';
-import './App.css';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core';
+import { Provider } from 'react-redux'
+import {
+  ThemeProvider,
+  createMuiTheme
+} from '@material-ui/core';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect
 } from "react-router-dom";
-import ProductList from './views/ProductList';
-import ProductDetails from './views/ProductDetails';
+import ProductListPage from './containers/ProductListPage';
+import ProductDetailsPage from './containers/ProductDetailsPage';
 import Menu from './components/Menu';
-import UserCart from './views/UserCart';
+import UserCartPage from './containers/UserCartPage';
+import ProductEditPage from './containers/ProductEditPage'
+import store from './redux/store';
+import ProductAddPage from './containers/ProductAddPage';
 
 
 const theme = createMuiTheme({
@@ -21,9 +27,9 @@ const theme = createMuiTheme({
   }
 })
 
-
 function App() {
   return (
+    <Provider store={store}>
       <ThemeProvider theme={theme}>
         <Router>
           <Menu />
@@ -35,12 +41,15 @@ function App() {
                 }}
               />
             </Route>
-            <Route exact path="/products" component={ProductList} />
-            <Route exact path="/cart" component={UserCart} />
-            <Route exact path="/products/:id" component={ProductDetails} />
+            <Route exact path="/products" component={ProductListPage} />
+            <Route exact path="/cart" component={UserCartPage} />
+            <Route exact path="/products/new" component={ProductAddPage} />
+            <Route exact path="/products/:id/edit" component={ProductEditPage} />
+            <Route exact path="/products/:id" component={ProductDetailsPage} />
           </Switch>
         </Router>
       </ThemeProvider>
+    </Provider>
   );
 }
 

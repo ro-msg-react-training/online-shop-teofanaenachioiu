@@ -6,6 +6,7 @@ export const StyledButton = withStyles((theme) => ({
         textTransform: 'capitalize',
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,
+        margin: 2,
         '&:hover':{
             color: theme.palette.primary.main,
         }

@@ -21,11 +21,9 @@ export function updateProductFromUserCart(newProduct: CartProduct){
     products[oldProductIndex] = newProduct
 }
 
-
 export function getProductsFromUserCart(){
     return products
 }
-
 
 export function isProductsInUserCart(){
     return products.length > 0;

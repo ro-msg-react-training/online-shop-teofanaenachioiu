@@ -30,14 +30,20 @@ function Menu() {
             <Container className={classes.topnavContent}>
                 <h1> Online Shop </h1>
                 <div className={classes.spacer}></div>
-                <Button>
-                    <Link to='/products' className={classes.menuItem}>Products</Link>
-                </Button>
-                <Button>
-                    <Link to='/cart' className={classes.menuItem}>Shopping Cart</Link>
-                </Button>
+
+                <Link to='/products'>
+                    <Button className={classes.menuItem}>
+                        Products
+                    </Button>
+                </Link>
+                
+                <Link to='/cart'>
+                    <Button className={classes.menuItem}>
+                        Shopping Cart
+                    </Button>
+                </Link>
             </Container>
-        </div>
+        </div >
     )
 }
 
