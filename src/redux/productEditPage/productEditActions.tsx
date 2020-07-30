@@ -1,7 +1,7 @@
 import {
-    READ_PRODUCT,
-    READ_PRODUCT_SUCCESS,
-    READ_PRODUCT_ERROR,
+    READ_PRODUCT_EDIT,
+    READ_PRODUCT_EDIT_SUCCESS,
+    READ_PRODUCT_EDIT_ERROR,
     EDIT_PRODUCT,
     EDIT_PRODUCT_SUCCESS,
     EDIT_PRODUCT_ERROR,
@@ -9,29 +9,30 @@ import {
     ADD_PRODUCT,
     ADD_PRODUCT_SUCCESS,
     ADD_PRODUCT_ERROR,
-    UPDATE_ERRORS
+    UPDATE_ERRORS,
+    CLEAR_DATA
 } from "./productEditTypes"
 import Product from "../../domain/Product"
 import { findById, update, add } from "../../service/ProductService"
-import { validate } from "../../service/ProductValidator"
+import { validate } from "../../validators/ProductValidator"
 
 
 export const fetchProductRequest = () => {
     return {
-        type: READ_PRODUCT
+        type: READ_PRODUCT_EDIT
     }
 }
 
 export const fetchProductSuccess = (product: Product) => {
     return {
-        type: READ_PRODUCT_SUCCESS,
+        type: READ_PRODUCT_EDIT_SUCCESS,
         payload: product
     }
 }
 
 export const fetchProductError = () => {
     return {
-        type: READ_PRODUCT_ERROR
+        type: READ_PRODUCT_EDIT_ERROR
     }
 }
 
@@ -78,8 +79,13 @@ export const localUpdateProductRequest = (product: Product) => {
     }
 }
 
+export const clearDataRequest = () => {
+    return {
+        type: CLEAR_DATA,
+    }
+}
+
 export const updateErrors = (errors: any) => {
-    console.log("frum actions de update ", errors)
     return {
         type: UPDATE_ERRORS,
         payload: errors
@@ -91,16 +97,14 @@ export const fetchProduct = (id: number) => {
         dispatch(fetchProductRequest())
         findById(id)
             .then(response => {
-                const products = response.data
-                dispatch(fetchProductSuccess(products))
-
+                const product = response.data
+                dispatch(fetchProductSuccess(product))
             })
             .catch(_ => {
                 dispatch(fetchProductError())
             })
     }
 }
-
 
 export const updateProduct = (product: Product) => {
     return (dispatch: any) => {
@@ -115,11 +119,10 @@ export const updateProduct = (product: Product) => {
     }
 }
 
-export const localUpdateProduct = (product: Product) => {
+export const localUpdateProduct = (property: string, product: Product) => {
     return (dispatch: any) => {
-        // validate form 
-        const errors = validate(product)
-        updateErrors(errors)
+        const errors = validate(property, product)
+        dispatch(updateErrors(errors))
         dispatch(localUpdateProductRequest(product))
     }
 }
@@ -136,3 +139,10 @@ export const addProduct = (product: Product) => {
             })
     }
 }
+
+export const clearData = () => {
+    return (dispatch: any) => {
+        dispatch(clearDataRequest())
+    }
+}
+

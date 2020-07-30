@@ -8,20 +8,34 @@ import Product from '../domain/Product';
 import { StyledButton } from '../components/StyledButton';
 
 
-function ProductDetailsPage(props: any) {
-    const params = props.match.params
+interface Props{
+    fetchProduct: (id: number) => void,
+    buyProduct: (product: Product) => void,
+    deleteProduct: (id: number) => void,
+    productInfo: {
+        loading: boolean,
+        product: Product,
+        error: boolean,
+        deleted: boolean
+    },
+    match: any
+}
+
+
+function ProductDetailsPage({fetchProduct, buyProduct, deleteProduct, productInfo, match}: Props) {
+    const productId = match.params.id
 
     useEffect(() => {
-        props.fetchProduct(params.id)
-    }, [params.id]);
+        fetchProduct(productId)
+    }, [productId]);
 
     const addProductToCart = (product: Product) => {
-        props.fetchBuyProduct(product)
+        buyProduct(product)
         alert('Product ' + product.name + ' added to cart!')
     }
 
-    const deleteProduct = (id: number) => {
-        props.fetchDeleteProduct(id)
+    const deleteProductFromList = (id: number) => {
+        deleteProduct(id)
     }
 
     return (
@@ -32,25 +46,25 @@ function ProductDetailsPage(props: any) {
 
                 </Grid>
                 <Grid item >
-                    <StyledButton onClick={(_) => addProductToCart(props.productInfo.product)}> Buy </StyledButton>
+                    <StyledButton onClick={(_) => addProductToCart(productInfo.product)}> Buy </StyledButton>
                 </Grid>
             </Grid>
 
             {
-                props.productInfo.loading ?
+                productInfo.loading ?
                     <LinearProgress /> :
 
-                    props.productInfo.error ?
+                    productInfo.error ?
                         <p> Product not found </p> :
 
-                        props.productInfo.deleted ?
+                        productInfo.deleted ?
                             <p> Product was deleted. Please go
                                 <Link to='/products'> back to the list </Link>
                             </p> :
-
+                            
                             <ProductDetails
-                                product={props.productInfo.product}
-                                deleteProduct={deleteProduct} />
+                                product={productInfo.product}
+                                deleteProduct={() => deleteProductFromList(productId)} />
             }
         </Container>
     )
@@ -65,8 +79,8 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         fetchProduct: (id: number) => dispatch(fetchProduct(id)),
-        fetchDeleteProduct: (id: number) => dispatch(fetchDelete(id)),
-        fetchBuyProduct: (product: Product) => dispatch(fetchBuy(product)),
+        deleteProduct: (id: number) => dispatch(fetchDelete(id)),
+        buyProduct: (product: Product) => dispatch(fetchBuy(product)),
     }
 }
 

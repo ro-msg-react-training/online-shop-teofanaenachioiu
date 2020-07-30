@@ -1,18 +1,47 @@
-import React  from 'react';
+import React, { useEffect }  from 'react';
 import Product from '../domain/Product';
-import { localUpdateProduct, addProduct } from '../redux/productEditPage/productEditActions';
+import { localUpdateProduct, addProduct, clearData } from '../redux/productEditPage/productEditActions';
 import { connect } from 'react-redux';
-import AddEditFrom from '../components/AddEditFrom';
+import ProductForm from '../components/ProductFrom';
 
 
-function ProductAddPage(props: any) {
+interface Props {
+    clearData: () => void,
+    localEditProduct: (property: string, product: Product) => void,
+    addProduct: (product: Product) => void,
+    productInfo: {
+        loading: boolean,
+        product: any,
+        error: boolean,
+        errors:
+        {
+            isFormValid: boolean,
+            name: string,
+            description: string,
+            category: string,
+            price: string
+        }
+    }
+}
 
+
+function ProductAddPage({clearData, localEditProduct, addProduct, productInfo}: Props) {
+
+    useEffect(() => {
+        clearData()
+        
+        return () => {
+            clearData()
+        }
+    }, [])
+
+    
     return (
-        <AddEditFrom 
-            productInfo = {props.productInfo}
+        <ProductForm 
+            productInfo = {productInfo}
             title = "Add product"
-            onChangeInput={props.localEditProduct}
-            onSubmit={props.addProduct}
+            onChangeInput={localEditProduct}
+            onSubmit={addProduct}
         />
     )
 }
@@ -26,7 +55,8 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         addProduct: (product: Product) => dispatch(addProduct(product)),
-        localEditProduct: (product: Product) => dispatch(localUpdateProduct(product)),
+        localEditProduct: (property: string, product: Product) => dispatch(localUpdateProduct(property, product)),
+        clearData: () => dispatch(clearData())
     }
 }
 

@@ -8,9 +8,20 @@ import { StyledButton } from '../components/StyledButton';
 import { Link } from 'react-router-dom';
 
 
-function ProductListPage(props: any) {
+interface Props {
+    fetchProducts: () => void,
+    productsInfo: {
+        loading: boolean,
+        products: Product[],
+        error: boolean,
+    }
+}
+
+
+function ProductListPage({ fetchProducts, productsInfo }: Props) {
+
     useEffect(() => {
-        props.fetchProducts()
+        fetchProducts()
     }, []);
 
     return (
@@ -19,6 +30,7 @@ function ProductListPage(props: any) {
                 <Grid item xs>
                     <h1>Products</h1>
                 </Grid>
+
                 <Grid item >
                     <Link to={`products/new`}>
                         <StyledButton> Add </StyledButton>
@@ -26,13 +38,16 @@ function ProductListPage(props: any) {
                 </Grid>
             </Grid>
             {
-                props.productsInfo.loading ?
+                productsInfo.loading ?
                     <LinearProgress /> :
-                    props.productsInfo.error ?
+                    
+                    productsInfo.error ?
                         <p> Products not found </p> :
-                        props.productsInfo.products.map((prod: Product) => <ProductListItem
-                            key={prod.id}
-                            product={prod} />)
+
+                        productsInfo.products.map((prod: Product) =>
+                            <ProductListItem
+                                key={prod.id}
+                                product={prod} />)
             }
         </Container>
     )

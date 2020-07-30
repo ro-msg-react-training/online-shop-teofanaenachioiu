@@ -1,23 +1,47 @@
 import React, { useEffect } from 'react';
 import Product from '../domain/Product';
-import { fetchProduct, updateProduct, localUpdateProduct } from '../redux/productEditPage/productEditActions';
+import { fetchProduct, updateProduct, localUpdateProduct, clearData } from '../redux/productEditPage/productEditActions';
 import { connect } from 'react-redux';
-import AddEditFrom from '../components/AddEditFrom';
+import ProductForm from '../components/ProductFrom';
 
+interface Props {
+    clearData: () => void,
+    localEditProduct: (property: string, product: Product) => void,
+    editProduct: (product: Product) => void,
+    fetchProduct: (id: number) => void,
+    productInfo: {
+        loading: boolean,
+        product: any,
+        error: boolean,
+        errors:
+        {
+            isFormValid: boolean,
+            name: string,
+            description: string,
+            category: string,
+            price: string
+        }
+    },
+    match: any
+}
 
-function ProductEditPage(props: any) {
-    const params = props.match.params
+function ProductEditPage({clearData, editProduct, fetchProduct, localEditProduct, productInfo, match}: Props) {
+    const productId = match.params.id
 
     useEffect(() => {
-        props.fetchProduct(params.id)
-    }, [params.id])
+        fetchProduct(productId)
+
+        return () => {
+            clearData()
+        }
+    }, [productId])
 
     return (
-        <AddEditFrom
-            productInfo={props.productInfo}
+        <ProductForm
+            productInfo={productInfo}
             title="Edit product details"
-            onChangeInput={props.localEditProduct}
-            onSubmit={props.editProduct}
+            onChangeInput={localEditProduct}
+            onSubmit={editProduct}
         />
     )
 }
@@ -32,7 +56,8 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         fetchProduct: (id: number) => dispatch(fetchProduct(id)),
         editProduct: (product: Product) => dispatch(updateProduct(product)),
-        localEditProduct: (product: Product) => dispatch(localUpdateProduct(product)),
+        localEditProduct: (property: string, product: Product) => dispatch(localUpdateProduct(property, product)),
+        clearData: () => dispatch(clearData())
     }
 }
 

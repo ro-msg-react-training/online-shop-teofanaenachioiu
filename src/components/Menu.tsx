@@ -1,29 +1,12 @@
 import React from 'react';
 import { Button, makeStyles, Container } from '@material-ui/core';
 import { Link } from 'react-router-dom'
+import { useMenuStyles } from '../styles/js/menuStyle';
+import { StyledLink } from './StyledLink';
 
-const useStyles = makeStyles((theme) => ({
-    topnav: {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
-    },
-    topnavContent: {
-        display: 'flex',
-        height: '3em',
-        alignItems: 'center'
-    },
-    spacer: {
-        flex: 1
-    },
-    menuItem: {
-        textDecoration: 'none',
-        color: theme.palette.primary.contrastText,
-        textTransform: 'capitalize'
-    }
-}));
 
 function Menu() {
-    const classes = useStyles();
+    const classes = useMenuStyles();
 
     return (
         <div className={classes.topnav}>
@@ -31,13 +14,18 @@ function Menu() {
                 <h1> Online Shop </h1>
                 <div className={classes.spacer}></div>
 
-                <Link to='/products'>
+                <StyledLink to='/' className={classes.link}>
+                    <Button className={classes.menuItem}>
+                        Home
+                    </Button>
+                </StyledLink>
+                <StyledLink to='/products' className={classes.link}>
                     <Button className={classes.menuItem}>
                         Products
                     </Button>
-                </Link>
+                </StyledLink>
                 
-                <Link to='/cart'>
+                <Link to='/cart' className={classes.link}>
                     <Button className={classes.menuItem}>
                         Shopping Cart
                     </Button>

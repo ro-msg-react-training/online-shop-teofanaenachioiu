@@ -7,7 +7,12 @@ import { StyledLink } from './StyledLink';
 import Product from '../domain/Product';
 
 
-function ProductListItem(props: { product: Product }) {
+interface Props{
+    product: Product 
+}
+
+
+function ProductListItem(props: Props) {
     let match = useRouteMatch();
 
     return (

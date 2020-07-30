@@ -1,23 +1,23 @@
 import React from 'react';
-import { Typography, Grid, Button, makeStyles } from "@material-ui/core";
+import { Typography, Grid, Button } from "@material-ui/core";
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import EditIcon from '@material-ui/icons/Edit'
 import { StyledPaper } from './StyledPaper';
 import Product from '../domain/Product';
 import { Link } from 'react-router-dom';
 import { useRouteMatch } from "react-router-dom";
+import { useProductDetailsStyles } from '../styles/js/productDetailsStyle';
 
 
-const useStyles = makeStyles((theme) => ({
-    img: {
-        width: '100%',
-        height: '100%'
-    },
-}));
+interface Props {
+    product: Product,
+    deleteProduct: (id: number) => void
+}
 
 
-function ProductDetails({ product, deleteProduct }: { product: Product, deleteProduct: any }) {
-    const classes = useStyles();
+function ProductDetails({ product, deleteProduct }: Props) {
+    const classes = useProductDetailsStyles();
+
     let match = useRouteMatch();
 
     return (
@@ -35,8 +35,8 @@ function ProductDetails({ product, deleteProduct }: { product: Product, deletePr
                         <Grid item xs>
                             <Typography variant="subtitle1">
                                 {product.name}
-
                             </Typography>
+
                             <Typography color="textSecondary">
                                 {product.description}
                             </Typography>
@@ -51,16 +51,22 @@ function ProductDetails({ product, deleteProduct }: { product: Product, deletePr
                 </Grid>
                 <Grid item>
                     <Grid item>
-                        <Typography variant="subtitle1">$ {product.price}</Typography>
+                        <Typography variant="subtitle1">
+                            $ {product.price}
+                        </Typography>
                     </Grid>
-                    
+
                     <Grid item >
-                        <Button color="primary" onClick={() => deleteProduct(product.id)}><DeleteForeverOutlinedIcon /></Button>
+                        <Button color="primary" onClick={() => deleteProduct(product.id)}>
+                            <DeleteForeverOutlinedIcon />
+                        </Button>
                     </Grid>
 
                     <Grid item >
                         <Link to={`${match.url}/edit`}>
-                            <Button color="primary"><EditIcon /></Button>
+                            <Button color="primary">
+                                <EditIcon />
+                            </Button>
                         </Link>
                     </Grid>
                 </Grid>

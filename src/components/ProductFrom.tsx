@@ -1,16 +1,40 @@
-import React, { useRef, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import { StyledPaper } from './StyledPaper';
 import { Container, Grid, LinearProgress, TextField } from '@material-ui/core';
 import { StyledButton } from './StyledButton';
 import { useHistory } from 'react-router-dom';
+import Product from '../domain/Product';
 
-function AddEditFrom(props: any) {
+
+interface Props {
+    onSubmit: (product: Product) => void
+    onChangeInput: (propetry: string, newProduct: Product) => void
+    title: string,
+    productInfo: {
+        loading: boolean,
+        product: any,
+        error: boolean,
+        errors:
+        {
+            isFormValid: boolean,
+            name: string,
+            description: string,
+            category: string,
+            price: string
+        }
+    }
+}
+
+
+function ProductForm({ onSubmit, onChangeInput, title, productInfo }: Props) {
     const history = useHistory()
 
     const submitForm = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        props.onSubmit(props.productInfo.product)
-        history.goBack()
+        if (productInfo.errors.isFormValid) {
+            onSubmit(productInfo.product)
+            history.goBack()
+        }
     }
 
     const goBack = () => {
@@ -18,16 +42,16 @@ function AddEditFrom(props: any) {
     }
 
     const changeProperty = (propetry: string, value: string) => {
-        const newProduct = Object.assign({}, props.productInfo.product);
+        const newProduct = Object.assign({}, productInfo.product);
         newProduct[propetry] = value
-        props.onChangeInput(newProduct)
+        onChangeInput(propetry, newProduct)
     }
 
     return (
         <Container>
             <Grid container alignItems={"center"}>
                 <Grid item xs>
-                    <h1>{props.title}</h1>
+                    <h1>{title}</h1>
                 </Grid>
 
                 <Grid item >
@@ -36,10 +60,10 @@ function AddEditFrom(props: any) {
                 </Grid>
             </Grid>
             {
-                props.productInfo.loading ?
+                productInfo.loading ?
                     <LinearProgress /> :
 
-                    props.productInfo.error ?
+                    productInfo.error ?
                         <p> Product not found </p> :
 
                         <StyledPaper>
@@ -47,34 +71,37 @@ function AddEditFrom(props: any) {
                                 <TextField
                                     label="Name"
                                     variant="filled"
-                                    defaultValue={props.productInfo.product?.name}
-                                    error={props.productInfo.errors.name.length === 0}
-                                    helperText={props.productInfo.errors.name}
+                                    defaultValue={productInfo.product?.name}
+                                    error={productInfo.errors.name.length > 0}
+                                    helperText={productInfo.errors.name}
                                     onChange={(e) => { changeProperty('name', e.target.value) }} />
+
                                 <TextField
                                     label="Description"
                                     variant="filled"
                                     multiline
                                     rows={4}
                                     rowsMax={10}
-                                    defaultValue={props.productInfo.product?.description}
-                                    error={props.productInfo.errors.description.length === 0}
-                                    helperText={props.productInfo.errors.description}
+                                    defaultValue={productInfo.product?.description}
+                                    error={productInfo.errors.description.length > 0}
+                                    helperText={productInfo.errors.description}
                                     onChange={(e) => { changeProperty('description', e.target.value) }} />
+
                                 <TextField
                                     label="Category"
                                     variant="filled"
-                                    defaultValue={props.productInfo.product?.category}
-                                    error={props.productInfo.errors.category.length === 0}
-                                    helperText={props.productInfo.errors.category}
+                                    defaultValue={productInfo.product?.category}
+                                    error={productInfo.errors.category.length > 0}
+                                    helperText={productInfo.errors.category}
                                     onChange={(e) => { changeProperty('category', e.target.value) }} />
+                                    
                                 <TextField
                                     label="Price"
                                     variant="filled"
                                     type="number"
-                                    defaultValue={props.productInfo.product?.price}
-                                    error={props.productInfo.errors.price.length === 0}
-                                    helperText={props.productInfo.errors.price}
+                                    defaultValue={productInfo.product?.price}
+                                    error={productInfo.errors.price.length > 0}
+                                    helperText={productInfo.errors.price}
                                     onChange={(e) => { changeProperty('price', e.target.value) }} />
                             </form>
                         </StyledPaper>
@@ -83,4 +110,4 @@ function AddEditFrom(props: any) {
     )
 }
 
-export default AddEditFrom;
+export default ProductForm;

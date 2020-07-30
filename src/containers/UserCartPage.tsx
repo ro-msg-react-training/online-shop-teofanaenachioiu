@@ -7,7 +7,19 @@ import { fetchUserCartProducts, sendOrder, updateQuantity } from '../redux/userC
 import { connect } from 'react-redux';
 
 
-function UserCartPage({ productsInfo, fetchProducts, sendOrder, updateQuantity }: { productsInfo: any, fetchProducts: any, sendOrder: any, updateQuantity: any }) {
+interface Props { 
+    fetchProducts: () => void, 
+    sendOrder: () => void, 
+    updateQuantity: (cartProduct: CartProduct) => void
+    productsInfo: {
+        cartProducts: CartProduct[],
+        loading: boolean,
+        error: boolean,
+    }
+}
+
+
+function UserCartPage({ productsInfo, fetchProducts, sendOrder, updateQuantity }: Props) {
 
     useEffect(() => {
         fetchProducts()
@@ -24,6 +36,7 @@ function UserCartPage({ productsInfo, fetchProducts, sendOrder, updateQuantity }
                 <Grid item xs>
                     <h1> Shopping Cart </h1>
                 </Grid>
+
                 {
                     productsInfo.cartProducts.length > 0 ?
                         <Grid>
