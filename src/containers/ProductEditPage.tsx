@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
 import Product from '../domain/Product';
-import { fetchProduct, updateProduct, localUpdateProduct, clearData } from '../redux/productEditPage/productEditActions';
+import { fetchProductForm, editProduct, clearData, updateErrors, localEditProduct } from '../redux/productEditPage/productEditActions';
 import { connect } from 'react-redux';
 import ProductForm from '../components/ProductFrom';
+import { StoreProps } from '../redux/props';
+
 
 interface Props {
     clearData: () => void,
-    localEditProduct: (property: string, product: Product) => void,
+    updateErrors: (property: string, product: Product) => void,
+    localEditProduct: (product: Product) => void,
     editProduct: (product: Product) => void,
-    fetchProduct: (id: number) => void,
+    fetchProductForm: (id: number) => void,
     productInfo: {
         loading: boolean,
         product: any,
@@ -25,11 +28,12 @@ interface Props {
     match: any
 }
 
-function ProductEditPage({clearData, editProduct, fetchProduct, localEditProduct, productInfo, match}: Props) {
+ 
+function ProductEditPage({clearData, editProduct, fetchProductForm, localEditProduct, updateErrors, productInfo, match}: Props) {
     const productId = match.params.id
 
     useEffect(() => {
-        fetchProduct(productId)
+        fetchProductForm(productId)
 
         return () => {
             clearData()
@@ -41,24 +45,16 @@ function ProductEditPage({clearData, editProduct, fetchProduct, localEditProduct
             productInfo={productInfo}
             title="Edit product details"
             onChangeInput={localEditProduct}
+            updateErrors={updateErrors}
             onSubmit={editProduct}
         />
     )
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = ({editProduct}: StoreProps) => {
     return {
-        productInfo: state.editProduct,
+        productInfo: editProduct,
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        fetchProduct: (id: number) => dispatch(fetchProduct(id)),
-        editProduct: (product: Product) => dispatch(updateProduct(product)),
-        localEditProduct: (property: string, product: Product) => dispatch(localUpdateProduct(property, product)),
-        clearData: () => dispatch(clearData())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductEditPage)
+export default connect(mapStateToProps, { fetchProductForm, editProduct, localEditProduct, updateErrors, clearData })(ProductEditPage)

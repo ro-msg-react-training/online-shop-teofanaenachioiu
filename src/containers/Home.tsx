@@ -1,18 +1,11 @@
 import React from 'react';
-import { Container, makeStyles, Button } from '@material-ui/core';
+import { Container, Button } from '@material-ui/core';
 import { Link } from "react-router-dom";
+import { useHomeStyles} from '../styles/js/homeStyle'
 
-const useStyles = makeStyles({
-    center: {
-        textAlign: 'center'
-    },
-    link: {
-        textDecoration: 'none'
-    }
-});
 
 function Home() {
-    const classes = useStyles();
+    const classes = useHomeStyles();
 
     return (
         <Container className={classes.center}>

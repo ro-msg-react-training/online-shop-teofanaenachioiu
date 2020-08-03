@@ -3,14 +3,15 @@ import { Container, Grid, LinearProgress } from '@material-ui/core';
 import UserCartListItem from '../components/UserCartListItem';
 import { StyledButton } from '../components/StyledButton';
 import CartProduct from '../domain/CartProduct';
-import { fetchUserCartProducts, sendOrder, updateQuantity } from '../redux/userCartPage/userCartActions';
+import { fetchCartProducts, sendOrder, updateProductQuantity } from '../redux/userCartPage/userCartActions';
 import { connect } from 'react-redux';
+import { StoreProps } from '../redux/props';
 
 
 interface Props { 
-    fetchProducts: () => void, 
+    fetchCartProducts: () => void, 
     sendOrder: () => void, 
-    updateQuantity: (cartProduct: CartProduct) => void
+    updateProductQuantity: (cartProduct: CartProduct) => void
     productsInfo: {
         cartProducts: CartProduct[],
         loading: boolean,
@@ -19,15 +20,15 @@ interface Props {
 }
 
 
-function UserCartPage({ productsInfo, fetchProducts, sendOrder, updateQuantity }: Props) {
+function UserCartPage({ productsInfo, fetchCartProducts, sendOrder, updateProductQuantity }: Props) {
 
     useEffect(() => {
-        fetchProducts()
+        fetchCartProducts()
     }, []);
 
     function handleQuantityChanged(cartProduct: CartProduct, newQuantity: number) {
         cartProduct.quantity = newQuantity;
-        updateQuantity(cartProduct);
+        updateProductQuantity(cartProduct);
     }
 
     return (
@@ -69,18 +70,10 @@ function UserCartPage({ productsInfo, fetchProducts, sendOrder, updateQuantity }
     )
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = ({userCart}: StoreProps) => {
     return {
-        productsInfo: state.userCart
+        productsInfo: userCart
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        fetchProducts: () => dispatch(fetchUserCartProducts()),
-        sendOrder: () => dispatch(sendOrder()),
-        updateQuantity: (cartProduct: CartProduct) => dispatch(updateQuantity(cartProduct))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserCartPage)
+export default connect(mapStateToProps, {fetchCartProducts, updateProductQuantity, sendOrder})(UserCartPage)

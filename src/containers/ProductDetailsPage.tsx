@@ -1,15 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Dispatch } from 'react';
 import { Container, LinearProgress, Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { fetchProduct, fetchDelete, fetchBuy } from '../redux/productDetailsPage/productDetailsActions';
+import { 
+    deleteProduct, 
+    fetchProductDetails, 
+    buyProduct
+} from '../redux/productDetailsPage/productDetailsActions';
 import { connect } from 'react-redux';
 import ProductDetails from '../components/ProductDetails';
 import Product from '../domain/Product';
 import { StyledButton } from '../components/StyledButton';
+import { StoreProps } from '../redux/props';
 
 
-interface Props{
-    fetchProduct: (id: number) => void,
+interface Props {
+    fetchProductDetails: (id: number) => void,
     buyProduct: (product: Product) => void,
     deleteProduct: (id: number) => void,
     productInfo: {
@@ -22,11 +27,11 @@ interface Props{
 }
 
 
-function ProductDetailsPage({fetchProduct, buyProduct, deleteProduct, productInfo, match}: Props) {
+function ProductDetailsPage({ fetchProductDetails, buyProduct, deleteProduct, productInfo, match }: Props) {
     const productId = match.params.id
 
     useEffect(() => {
-        fetchProduct(productId)
+        fetchProductDetails(productId)
     }, [productId]);
 
     const addProductToCart = (product: Product) => {
@@ -45,8 +50,11 @@ function ProductDetailsPage({fetchProduct, buyProduct, deleteProduct, productInf
                     <h1>Product details</h1>
 
                 </Grid>
-                <Grid item >
-                    <StyledButton onClick={(_) => addProductToCart(productInfo.product)}> Buy </StyledButton>
+                <Grid item >{
+                    productInfo.deleted ?
+                        null :
+                        <StyledButton onClick={(_) => addProductToCart(productInfo.product)}> Buy </StyledButton>
+                }
                 </Grid>
             </Grid>
 
@@ -58,10 +66,10 @@ function ProductDetailsPage({fetchProduct, buyProduct, deleteProduct, productInf
                         <p> Product not found </p> :
 
                         productInfo.deleted ?
-                            <p> Product was deleted. Please go
+                            <p> The product was deleted. Please go
                                 <Link to='/products'> back to the list </Link>
                             </p> :
-                            
+
                             <ProductDetails
                                 product={productInfo.product}
                                 deleteProduct={() => deleteProductFromList(productId)} />
@@ -70,18 +78,10 @@ function ProductDetailsPage({fetchProduct, buyProduct, deleteProduct, productInf
     )
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = ({product}: StoreProps) => {
     return {
-        productInfo: state.product,
+        productInfo: product,
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        fetchProduct: (id: number) => dispatch(fetchProduct(id)),
-        deleteProduct: (id: number) => dispatch(fetchDelete(id)),
-        buyProduct: (product: Product) => dispatch(fetchBuy(product)),
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductDetailsPage)
+export default connect(mapStateToProps, { fetchProductDetails, deleteProduct, buyProduct })(ProductDetailsPage)

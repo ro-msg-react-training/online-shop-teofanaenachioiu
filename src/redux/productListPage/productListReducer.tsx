@@ -1,9 +1,10 @@
 import {
-    READ_PRODUCTS,
     READ_PRODUCTS_SUCCESS,
-    READ_PRODUCTS_ERROR
+    READ_PRODUCTS_ERROR,
+    READ_PRODUCTS_REQUEST
 } from "./productListTypes"
 import Product from "../../domain/Product"
+
 
 const initialState = {
     loading: false,
@@ -11,9 +12,10 @@ const initialState = {
     error: false
 }
 
+
 const reducer = (state = initialState, action: { type: string, payload: Product[] | undefined }) => {
     switch (action.type) {
-        case READ_PRODUCTS:
+        case READ_PRODUCTS_REQUEST:
             return {
                 ...state,
                 loading: true

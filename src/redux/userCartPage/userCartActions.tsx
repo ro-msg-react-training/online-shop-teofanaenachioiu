@@ -1,38 +1,51 @@
 import {
     READ_CART_PRODUCTS,
+    READ_CART_PRODUCTS_REQUEST,
     READ_CART_PRODUCTS_SUCCESS,
     READ_CART_PRODUCTS_ERROR,
     SEND_ORDER,
+    SEND_ORDER_REQUEST,
     SEND_ORDER_SUCCESS,
     SEND_ORDER_ERROR, 
-    CLEAR_CART,
-    UPDATE_QUANTITY
+    UPDATE_PRODUCT_QUANTITY
 } from "./userCartTypes"
-import { getProductsFromUserCart, sendUserOrder, updateProductFromUserCart } from "../../service/CartService"
 import CartProduct from "../../domain/CartProduct"
 
-export const fetchProductsRequest = () => {
+
+export const fetchCartProducts = () => {
     return {
         type: READ_CART_PRODUCTS
     }
 }
 
-export const fetchProductsSucces = (cartProducts: CartProduct[]) => {
+export const fetchCartProductsRequest = () => {
+    return {
+        type: READ_CART_PRODUCTS_REQUEST
+    }
+}
+
+export const fetchCartProductsSucces = (cartProducts: CartProduct[]) => {
     return {
         type: READ_CART_PRODUCTS_SUCCESS,
         payload: cartProducts
     }
 }
 
-export const fetchProductsError = () => {
+export const fetchCartProductsError = () => {
     return {
         type: READ_CART_PRODUCTS_ERROR
     }
 }
 
-export const sendOrderRequest = () => {
+export const sendOrder = () => {
     return {
         type: SEND_ORDER,
+    }
+}
+
+export const sendOrderRequest = () => {
+    return {
+        type: SEND_ORDER_REQUEST,
     }
 }
 
@@ -48,45 +61,9 @@ export const sendOrderError = () => {
     }
 }
 
-export const clearCart = () => {
+export const updateProductQuantity = (cartProduct: CartProduct) => {
     return {
-        type: CLEAR_CART
-    }
-}
-
-export const updateProductQuantityRequest = () => {
-    return {
-        type: UPDATE_QUANTITY,
-    }
-}
-
-export const fetchUserCartProducts = () => {
-    return (dispatch: any) => {
-        dispatch(fetchProductsRequest())
-        const cartProducts = getProductsFromUserCart()
-        dispatch(fetchProductsSucces(cartProducts))
-    }
-}
-
-export const sendOrder = () => {
-    return (dispatch: any) => {
-        dispatch(sendOrderRequest())
-        sendUserOrder()
-            .then((response) => {
-                dispatch(sendOrderSucces())
-                dispatch(clearCart())
-                console.log(response)
-            })
-            .catch((error) => {
-                dispatch(sendOrderError())
-                console.log(error)
-            })
-    }
-}
-
-export const updateQuantity = (cartProduct: CartProduct) =>{
-    return (dispatch: any) => {
-        dispatch(updateProductQuantityRequest())
-        updateProductFromUserCart(cartProduct)
+        type: UPDATE_PRODUCT_QUANTITY,
+        payload: cartProduct
     }
 }

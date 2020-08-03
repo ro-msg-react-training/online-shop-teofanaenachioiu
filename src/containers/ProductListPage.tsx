@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, Dispatch } from 'react'
 import ProductListItem from '../components/ProductListItem'
 import { Container, LinearProgress, Grid } from '@material-ui/core'
 import Product from '../domain/Product';
 import { fetchProducts } from '../redux';
 import { connect } from 'react-redux';
 import { StyledButton } from '../components/StyledButton';
-import { Link } from 'react-router-dom';
+import { StyledLink } from '../components/StyledLink';
+import { StoreProps } from '../redux/props';
 
 
 interface Props {
@@ -32,9 +33,9 @@ function ProductListPage({ fetchProducts, productsInfo }: Props) {
                 </Grid>
 
                 <Grid item >
-                    <Link to={`products/new`}>
+                    <StyledLink to={`products/new`}>
                         <StyledButton> Add </StyledButton>
-                    </Link>
+                    </StyledLink>
                 </Grid>
             </Grid>
             {
@@ -53,16 +54,10 @@ function ProductListPage({ fetchProducts, productsInfo }: Props) {
     )
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = ({products}: StoreProps) => {
     return {
-        productsInfo: state.products
+        productsInfo: products
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        fetchProducts: () => dispatch(fetchProducts())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductListPage)
+export default connect(mapStateToProps, {fetchProducts})(ProductListPage)

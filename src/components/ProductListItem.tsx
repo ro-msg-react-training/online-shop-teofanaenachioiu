@@ -7,8 +7,8 @@ import { StyledLink } from './StyledLink';
 import Product from '../domain/Product';
 
 
-interface Props{
-    product: Product 
+interface Props {
+    product: Product
 }
 
 
@@ -28,11 +28,12 @@ function ProductListItem(props: Props) {
                     <Typography>
                         $ {props.product.price}
                     </Typography>
-                    <StyledButton>
-                        <StyledLink to={`${match.url}/${props.product.id}`}>
+                    
+                    <StyledLink to={`${match.url}/${props.product.id}`}>
+                        <StyledButton>
                             Details
-                            </StyledLink>
-                    </StyledButton>
+                        </StyledButton>
+                    </StyledLink>
                 </Grid>
             </Grid>
         </StyledPaper>

@@ -1,14 +1,16 @@
-import React, { useEffect }  from 'react';
+import React, { useEffect, Dispatch }  from 'react';
 import Product from '../domain/Product';
-import { localUpdateProduct, addProduct, clearData } from '../redux/productEditPage/productEditActions';
+import { addProduct, clearData, updateErrors, localEditProduct } from '../redux/productEditPage/productEditActions';
 import { connect } from 'react-redux';
 import ProductForm from '../components/ProductFrom';
+import { StoreProps } from '../redux/props';
 
 
 interface Props {
     clearData: () => void,
-    localEditProduct: (property: string, product: Product) => void,
+    localEditProduct: (product: Product) => void,
     addProduct: (product: Product) => void,
+    updateErrors: (property: string, product: Product) => void,
     productInfo: {
         loading: boolean,
         product: any,
@@ -25,7 +27,7 @@ interface Props {
 }
 
 
-function ProductAddPage({clearData, localEditProduct, addProduct, productInfo}: Props) {
+function ProductAddPage({clearData, localEditProduct, addProduct, updateErrors, productInfo}: Props) {
 
     useEffect(() => {
         clearData()
@@ -41,23 +43,16 @@ function ProductAddPage({clearData, localEditProduct, addProduct, productInfo}: 
             productInfo = {productInfo}
             title = "Add product"
             onChangeInput={localEditProduct}
+            updateErrors={updateErrors}
             onSubmit={addProduct}
         />
     )
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = ({editProduct}: StoreProps) => {
     return {
-        productInfo: state.editProduct,
+        productInfo: editProduct,
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        addProduct: (product: Product) => dispatch(addProduct(product)),
-        localEditProduct: (property: string, product: Product) => dispatch(localUpdateProduct(property, product)),
-        clearData: () => dispatch(clearData())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductAddPage)
+export default connect(mapStateToProps, { addProduct, updateErrors, localEditProduct, clearData })(ProductAddPage)

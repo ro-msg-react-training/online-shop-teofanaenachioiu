@@ -1,8 +1,10 @@
 import {
-    READ_PRODUCT_EDIT,
-    READ_PRODUCT_EDIT_SUCCESS,
-    READ_PRODUCT_EDIT_ERROR,
+    READ_PRODUCT_FORM,
+    READ_PRODUCT_FROM_REQUEST,
+    READ_PRODUCT_FORM_SUCCESS,
+    READ_PRODUCT_FORM_ERROR,
     EDIT_PRODUCT,
+    EDIT_PRODUCT_REQUEST,
     EDIT_PRODUCT_SUCCESS,
     EDIT_PRODUCT_ERROR,
     LOCAL_EDIT_PRODUCT,
@@ -10,53 +12,73 @@ import {
     ADD_PRODUCT_SUCCESS,
     ADD_PRODUCT_ERROR,
     UPDATE_ERRORS,
-    CLEAR_DATA
+    CLEAR_DATA,
+    ADD_PRODUCT_REQUEST
 } from "./productEditTypes"
 import Product from "../../domain/Product"
-import { findById, update, add } from "../../service/ProductService"
-import { validate } from "../../validators/ProductValidator"
 
 
-export const fetchProductRequest = () => {
+export const fetchProductForm = (id: number) => {
     return {
-        type: READ_PRODUCT_EDIT
+        type: READ_PRODUCT_FORM,
+        payload: id
     }
 }
 
-export const fetchProductSuccess = (product: Product) => {
+export const fetchProductFormRequest = () => {
     return {
-        type: READ_PRODUCT_EDIT_SUCCESS,
+        type: READ_PRODUCT_FROM_REQUEST
+    }
+}
+
+export const fetchProductFormSuccess = (product: Product) => {
+    return {
+        type: READ_PRODUCT_FORM_SUCCESS,
         payload: product
     }
 }
 
-export const fetchProductError = () => {
+export const fetchProductFormError = () => {
     return {
-        type: READ_PRODUCT_EDIT_ERROR
+        type: READ_PRODUCT_FORM_ERROR
     }
 }
 
-export const updateProductRequest = () => {
+export const editProduct = (product: Product) => {
     return {
-        type: EDIT_PRODUCT
+        type: EDIT_PRODUCT,
+        payload: product
     }
 }
 
-export const updateProductSuccess = () => {
+export const editProductRequest = () => {
+    return {
+        type: EDIT_PRODUCT_REQUEST
+    }
+}
+
+export const editProductSuccess = () => {
     return {
         type: EDIT_PRODUCT_SUCCESS
     }
 }
 
-export const updateProductError = () => {
+export const editProductError = () => {
     return {
         type: EDIT_PRODUCT_ERROR
     }
 }
 
+export const addProduct = (product: Product) => {
+    return {
+        type: ADD_PRODUCT,
+        payload: product
+    }
+}
+
 export const addProductRequest = () => {
     return {
-        type: ADD_PRODUCT
+        type: ADD_PRODUCT_REQUEST
     }
 }
 
@@ -72,77 +94,25 @@ export const addProductError = () => {
     }
 }
 
-export const localUpdateProductRequest = (product: Product) => {
+export const localEditProduct = (product: Product) => {
     return {
         type: LOCAL_EDIT_PRODUCT,
         payload: product
     }
 }
 
-export const clearDataRequest = () => {
+export const clearData = () => {
     return {
         type: CLEAR_DATA,
     }
 }
 
-export const updateErrors = (errors: any) => {
+export const updateErrors = (property: string, product: Product) => {
     return {
         type: UPDATE_ERRORS,
-        payload: errors
+        payload: {
+            property: property,
+            product: product
+        }
     }
 }
-
-export const fetchProduct = (id: number) => {
-    return (dispatch: any) => {
-        dispatch(fetchProductRequest())
-        findById(id)
-            .then(response => {
-                const product = response.data
-                dispatch(fetchProductSuccess(product))
-            })
-            .catch(_ => {
-                dispatch(fetchProductError())
-            })
-    }
-}
-
-export const updateProduct = (product: Product) => {
-    return (dispatch: any) => {
-        dispatch(updateProductRequest())
-        update(product)
-            .then(_ => {
-                dispatch(updateProductSuccess())
-            })
-            .catch(_ => {
-                dispatch(updateProductError())
-            })
-    }
-}
-
-export const localUpdateProduct = (property: string, product: Product) => {
-    return (dispatch: any) => {
-        const errors = validate(property, product)
-        dispatch(updateErrors(errors))
-        dispatch(localUpdateProductRequest(product))
-    }
-}
-
-export const addProduct = (product: Product) => {
-    return (dispatch: any) => {
-        dispatch(addProductRequest())
-        add(product)
-            .then(_ => {
-                dispatch(addProductSuccess())
-            })
-            .catch(_ => {
-                dispatch(addProductError())
-            })
-    }
-}
-
-export const clearData = () => {
-    return (dispatch: any) => {
-        dispatch(clearDataRequest())
-    }
-}
-

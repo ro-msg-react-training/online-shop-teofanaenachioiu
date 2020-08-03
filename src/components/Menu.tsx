@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, makeStyles, Container } from '@material-ui/core';
+import { Button, Container } from '@material-ui/core';
 import { Link } from 'react-router-dom'
 import { useMenuStyles } from '../styles/js/menuStyle';
 import { StyledLink } from './StyledLink';
@@ -19,6 +19,7 @@ function Menu() {
                         Home
                     </Button>
                 </StyledLink>
+                
                 <StyledLink to='/products' className={classes.link}>
                     <Button className={classes.menuItem}>
                         Products

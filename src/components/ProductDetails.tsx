@@ -49,6 +49,7 @@ function ProductDetails({ product, deleteProduct }: Props) {
                         </Grid>
                     </Grid>
                 </Grid>
+                
                 <Grid item>
                     <Grid item>
                         <Typography variant="subtitle1">

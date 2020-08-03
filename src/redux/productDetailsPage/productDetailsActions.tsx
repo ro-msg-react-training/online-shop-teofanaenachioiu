@@ -1,112 +1,92 @@
 import {
-    READ_PRODUCT,
-    READ_PRODUCT_SUCCESS,
-    READ_PRODUCT_ERROR,
+    READ_PRODUCT_DETAILS_REQUEST,
+    READ_PRODUCT_DETAILS_SUCCESS,
+    READ_PRODUCT_DETAILS_ERROR,
     DELETE_PRODUCT,
     DELETE_PRODUCT_SUCCESS,
     DELETE_PRODUCT_ERROR,
     BUY_PRODUCT,
     BUY_PRODUCT_SUCCESS,
-    BUY_PRODUCT_ERROR
+    BUY_PRODUCT_ERROR,
+    READ_PRODUCT_DETAILS,
+    DELETE_PRODUCT_REQUEST,
+    BUY_PRODUCT_REQUEST
 } from "./productDetailsTypes"
 import Product from "../../domain/Product"
-import { findById, deleteById } from "../../service/ProductService"
-import { addProductInUserCart } from "../../service/CartService"
 
-export const fetchProductRequest = () => {
+
+export const fetchProductDetails = (id: number) => {
     return {
-        type: READ_PRODUCT
+        type: READ_PRODUCT_DETAILS,
+        payload: id
     }
 }
 
-export const fetchProductSuccess = (product: Product) => {
+export const fetchProductDetailRequest = () => {
     return {
-        type: READ_PRODUCT_SUCCESS,
+        type: READ_PRODUCT_DETAILS_REQUEST
+    }
+}
+
+export const fetchProductDetailSucces = (product: Product) => {
+    return {
+        type: READ_PRODUCT_DETAILS_SUCCESS,
         payload: product
     }
 }
 
-export const fetchProductError = () => {
+export const fetchProductDetailError = () => {
     return {
-        type: READ_PRODUCT_ERROR
+        type: READ_PRODUCT_DETAILS_ERROR
     }
 }
 
-export const fetchDeleteProduct = () => {
+export const deleteProduct = (id: number) => {
     return {
-        type: DELETE_PRODUCT
+        type: DELETE_PRODUCT,
+        payload: id
     }
 }
 
-export const fetchDeleteProductSuccess = () => {
+export const deleteProductRequest = () => {
+    return {
+        type: DELETE_PRODUCT_REQUEST
+    }
+}
+
+export const deleteProductSuccess = () => {
     return {
         type: DELETE_PRODUCT_SUCCESS
     }
 }
 
-export const fetchDeleteProductError = () => {
+export const deleteProductError = () => {
     return {
         type: DELETE_PRODUCT_ERROR
     }
 }
 
-export const fetchBuyProduct = () => {
+export const buyProduct = (product: Product) => {
     return {
-        type: BUY_PRODUCT
+        type: BUY_PRODUCT,
+        payload: product
     }
 }
 
-export const fetchBuyProductSuccess = () => {
+export const buyProductRequest = () => {
+    return {
+        type: BUY_PRODUCT_REQUEST
+    }
+}
+
+export const buyProductSuccess = () => {
     return {
         type: BUY_PRODUCT_SUCCESS
     }
 }
 
-export const fetchBuyProductError = () => {
+export const buyProductError = () => {
     return {
         type: BUY_PRODUCT_ERROR
-    }
-}
-
-export const fetchProduct = (id: number) => {
-    return (dispatch: any) => {
-        dispatch(fetchProductRequest())
-        findById(id)
-            .then(response => {
-                const products = response.data
-                dispatch(fetchProductSuccess(products))
-
-            })
-            .catch(error => {
-                dispatch(fetchProductError())
-            })
-    }
-}
-
-
-export const fetchDelete = (id: number) => {
-    return (dispatch: any) => {
-        dispatch(fetchDeleteProduct())
-        deleteById(id)
-            .then(_ => {
-                dispatch(fetchDeleteProductSuccess())
-            })
-            .catch(_ => {
-                dispatch(fetchDeleteProductError())
-            })
-    }
-}
-
-export const fetchBuy = (product: Product) => {
-    return (dispatch: any) => {
-        dispatch(fetchBuyProduct())
-        addProductInUserCart(product)
-        dispatch(fetchBuyProductSuccess())
-    }
-}
-
-export const fetchBuyConfirm = () => {
-    return (dispatch: any) => {
-        dispatch(fetchBuyProduct())
     }
 }

@@ -1,15 +1,16 @@
 import {
-    READ_PRODUCT,
-    READ_PRODUCT_SUCCESS,
-    READ_PRODUCT_ERROR,
-    DELETE_PRODUCT,
+    READ_PRODUCT_DETAILS_REQUEST,
+    READ_PRODUCT_DETAILS_SUCCESS,
+    READ_PRODUCT_DETAILS_ERROR,
+    DELETE_PRODUCT_REQUEST,
     DELETE_PRODUCT_SUCCESS,
     DELETE_PRODUCT_ERROR,
-    BUY_PRODUCT,
+    BUY_PRODUCT_REQUEST,
     BUY_PRODUCT_SUCCESS,
-    BUY_PRODUCT_ERROR
+    BUY_PRODUCT_ERROR,
 } from "./productDetailsTypes"
 import Product from "../../domain/Product"
+
 
 const initialState = {
     loading: false,
@@ -19,30 +20,31 @@ const initialState = {
     bought: false
 }
 
-const reducer = (state = initialState, action: { type: string, payload: Product | {} }) => {
+
+const reducer = (state = initialState, action: { type: string, payload: Product | {} | number }) => {
     switch (action.type) {
-        case READ_PRODUCT:
+        case READ_PRODUCT_DETAILS_REQUEST:
             return {
                 ...state,
                 loading: true,
                 deleted: false,
                 bought: false
             }
-        case READ_PRODUCT_SUCCESS:
+        case READ_PRODUCT_DETAILS_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 product: action.payload,
                 error: false
             }
-        case READ_PRODUCT_ERROR:
+        case READ_PRODUCT_DETAILS_ERROR:
             return {
                 ...state,
                 loading: false,
                 product: {},
                 error: true
             }
-        case DELETE_PRODUCT:
+        case DELETE_PRODUCT_REQUEST:
             return {
                 ...state,
                 deleted: false
@@ -57,7 +59,7 @@ const reducer = (state = initialState, action: { type: string, payload: Product 
                 ...state,
                 deleted: false
             }
-        case BUY_PRODUCT:
+        case BUY_PRODUCT_REQUEST:
             return {
                 ...state,
                 bought: false

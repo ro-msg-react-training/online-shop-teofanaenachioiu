@@ -4,11 +4,13 @@ import { Container, Grid, LinearProgress, TextField } from '@material-ui/core';
 import { StyledButton } from './StyledButton';
 import { useHistory } from 'react-router-dom';
 import Product from '../domain/Product';
+import { useProductFormStyles } from '../styles/js/productFormStyles';
 
 
 interface Props {
-    onSubmit: (product: Product) => void
-    onChangeInput: (propetry: string, newProduct: Product) => void
+    onSubmit: (product: Product) => void,
+    updateErrors: (propetry: string, newProduct: Product) => void,
+    onChangeInput: (newProduct: Product) => void,
     title: string,
     productInfo: {
         loading: boolean,
@@ -26,12 +28,14 @@ interface Props {
 }
 
 
-function ProductForm({ onSubmit, onChangeInput, title, productInfo }: Props) {
+function ProductForm({ onSubmit, onChangeInput, updateErrors, title, productInfo }: Props) {
     const history = useHistory()
+    const classes = useProductFormStyles()
 
     const submitForm = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (productInfo.errors.isFormValid) {
+            console.log('dau submit laa ', productInfo.product)
             onSubmit(productInfo.product)
             history.goBack()
         }
@@ -44,7 +48,9 @@ function ProductForm({ onSubmit, onChangeInput, title, productInfo }: Props) {
     const changeProperty = (propetry: string, value: string) => {
         const newProduct = Object.assign({}, productInfo.product);
         newProduct[propetry] = value
-        onChangeInput(propetry, newProduct)
+        onChangeInput(newProduct)
+        console.log('aadd product', newProduct)
+        updateErrors(propetry, newProduct)
     }
 
     return (
@@ -67,14 +73,34 @@ function ProductForm({ onSubmit, onChangeInput, title, productInfo }: Props) {
                         <p> Product not found </p> :
 
                         <StyledPaper>
-                            <form id="form" onSubmit={(e) => submitForm(e)}>
+                            <form id="form" onSubmit={(e) => submitForm(e)} className={classes.productForm}>
                                 <TextField
                                     label="Name"
                                     variant="filled"
                                     defaultValue={productInfo.product?.name}
                                     error={productInfo.errors.name.length > 0}
                                     helperText={productInfo.errors.name}
-                                    onChange={(e) => { changeProperty('name', e.target.value) }} />
+                                    onChange={(e) => { changeProperty('name', e.target.value) }}
+                                    className={classes.formItem} />
+
+                                <TextField
+                                    label="Category"
+                                    variant="filled"
+                                    defaultValue={productInfo.product?.category}
+                                    error={productInfo.errors.category.length > 0}
+                                    helperText={productInfo.errors.category}
+                                    onChange={(e) => { changeProperty('category', e.target.value) }}
+                                    className={classes.formItem} />
+
+                                <TextField
+                                    label="Price"
+                                    variant="filled"
+                                    type="number"
+                                    defaultValue={productInfo.product?.price}
+                                    error={productInfo.errors.price.length > 0}
+                                    helperText={productInfo.errors.price}
+                                    onChange={(e) => { changeProperty('price', e.target.value) }}
+                                    className={classes.formItem} />
 
                                 <TextField
                                     label="Description"
@@ -85,24 +111,8 @@ function ProductForm({ onSubmit, onChangeInput, title, productInfo }: Props) {
                                     defaultValue={productInfo.product?.description}
                                     error={productInfo.errors.description.length > 0}
                                     helperText={productInfo.errors.description}
-                                    onChange={(e) => { changeProperty('description', e.target.value) }} />
-
-                                <TextField
-                                    label="Category"
-                                    variant="filled"
-                                    defaultValue={productInfo.product?.category}
-                                    error={productInfo.errors.category.length > 0}
-                                    helperText={productInfo.errors.category}
-                                    onChange={(e) => { changeProperty('category', e.target.value) }} />
-                                    
-                                <TextField
-                                    label="Price"
-                                    variant="filled"
-                                    type="number"
-                                    defaultValue={productInfo.product?.price}
-                                    error={productInfo.errors.price.length > 0}
-                                    helperText={productInfo.errors.price}
-                                    onChange={(e) => { changeProperty('price', e.target.value) }} />
+                                    onChange={(e) => { changeProperty('description', e.target.value) }}
+                                    className={classes.formItemLarge} />
                             </form>
                         </StyledPaper>
             }
